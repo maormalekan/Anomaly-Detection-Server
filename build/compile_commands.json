@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/maorsdf/mileStone3/build",
+  "command": "/bin/g++-9    -g   -o CMakeFiles/ex1.dir/MainTrain.cpp.o -c /home/maorsdf/mileStone3/MainTrain.cpp",
+  "file": "/home/maorsdf/mileStone3/MainTrain.cpp"
+},
+{
+  "directory": "/home/maorsdf/mileStone3/build",
+  "command": "/bin/g++-9    -g   -o CMakeFiles/ex1.dir/anomaly_detection_util.cpp.o -c /home/maorsdf/mileStone3/anomaly_detection_util.cpp",
+  "file": "/home/maorsdf/mileStone3/anomaly_detection_util.cpp"
+},
+{
+  "directory": "/home/maorsdf/mileStone3/build",
+  "command": "/bin/g++-9    -g   -o CMakeFiles/ex1.dir/HybridAnomalyDetector.cpp.o -c /home/maorsdf/mileStone3/HybridAnomalyDetector.cpp",
+  "file": "/home/maorsdf/mileStone3/HybridAnomalyDetector.cpp"
+},
+{
+  "directory": "/home/maorsdf/mileStone3/build",
+  "command": "/bin/g++-9    -g   -o CMakeFiles/ex1.dir/minCircle.cpp.o -c /home/maorsdf/mileStone3/minCircle.cpp",
+  "file": "/home/maorsdf/mileStone3/minCircle.cpp"
+},
+{
+  "directory": "/home/maorsdf/mileStone3/build",
+  "command": "/bin/g++-9    -g   -o CMakeFiles/ex1.dir/SimpleAnomalyDetector.cpp.o -c /home/maorsdf/mileStone3/SimpleAnomalyDetector.cpp",
+  "file": "/home/maorsdf/mileStone3/SimpleAnomalyDetector.cpp"
+},
+{
+  "directory": "/home/maorsdf/mileStone3/build",
+  "command": "/bin/g++-9    -g   -o CMakeFiles/ex1.dir/timeseries.cpp.o -c /home/maorsdf/mileStone3/timeseries.cpp",
+  "file": "/home/maorsdf/mileStone3/timeseries.cpp"
+}
+]
