@@ -16,12 +16,22 @@ const map<string, vector<float>> TimeSeries:: getMap() const {
     return featuresMap;
 }
 
+void TimeSeries:: initFeatures(string line) {            
+    stringstream ss(line);
+    string feature;
+    size_t i = 0;
+    while (getline(ss, feature, ',')) {
+        features.push_back(feature);
+        vector<float> v;
+        featuresMap.insert({feature, v});
+    }            
+}
+
 void TimeSeries:: addData(string values) {
     stringstream ss(values);
     string value;
     size_t i = 0;
     while (getline(ss, value, ',')) {
-        //featuresMap.find(features[i])->second.push_back(stof(value));
         featuresMap[features[i]].push_back(stof(value));
         i++;
     }

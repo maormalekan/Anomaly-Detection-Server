@@ -23,16 +23,7 @@ class TimeSeries{
     map<string, vector<float>> featuresMap;
     
     public:
-        void initFeatures(string line) {            
-            stringstream ss(line);
-            string feature;
-            size_t i = 0;
-            while (getline(ss, feature, ',')) {
-                features.push_back(feature);
-                vector<float> v;
-                featuresMap.insert({feature, v});
-            }            
-        }
+        TimeSeries() {}
 
         TimeSeries(string csv){
             ifstream my_file(csv);
@@ -52,6 +43,10 @@ class TimeSeries{
             }
         }
 
+        void initFeatures(string line);
+
+        void addData(string values);
+
         // The function returns a vector with it's features
         const vector<string> getFeatures() const;
 
@@ -62,7 +57,6 @@ class TimeSeries{
         // The function gets feature's name and returns it's values
         const map<string, vector<float>> getMap() const;
 
-        void addData(string values);
 };
 
 #endif /* TIMESERIES_H_ */

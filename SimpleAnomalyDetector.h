@@ -1,8 +1,8 @@
 #ifndef SIMPLEANOMALYDETECTOR_H_
 #define SIMPLEANOMALYDETECTOR_H_
 
-#include "AnomalyDetector.h"
 #include "anomaly_detection_util.h"
+#include "AnomalyDetector.h"
 #include <vector>
 #include <algorithm>
 #include <string.h>
@@ -30,13 +30,11 @@ public:
     
 	virtual vector<AnomalyReport> detect(const TimeSeries& ts);
 
-	const vector<correlatedFeatures> getNormalModel() const {
-		return cf;
-	}
+	const vector<correlatedFeatures> getNormalModel() const;
 
-	void setCorrelationThreshold(float threshold){
-		this->threshold=threshold;
-	}
+	const float getCorrelationThreshold() const;
+
+	void setCorrelationThreshold(float threshold);
 
 protected:
 	virtual void buildArrayPoints(Point** points, float* x, float* y, int size);

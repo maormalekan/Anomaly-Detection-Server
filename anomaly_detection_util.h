@@ -1,9 +1,3 @@
-/*
- * anomaly_detection_util.h
- *
- * Author: Maor Malekan 321202962
- */
-
 #ifndef ANOMALYDETECTORUTIL_H_
 #define ANOMALYDETECTORUTIL_H_
 

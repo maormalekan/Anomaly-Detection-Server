@@ -1,5 +1,4 @@
 #include "HybridAnomalyDetector.h"
-#include "minCircle.h"
 #include "anomaly_detection_util.h"
 #include <vector>
 
@@ -26,7 +25,6 @@ void HybridAnomalyDetector:: buildCorrelatedFeatures(const TimeSeries& ts,float 
     else {
         SimpleAnomalyDetector:: buildCorrelatedFeatures(ts, maxCorrelation, f1, f2, xVec, valuesSize);
     }
-    
 }
 
 float HybridAnomalyDetector:: findDev(Point p, const correlatedFeatures& features) {

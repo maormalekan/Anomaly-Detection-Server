@@ -16,6 +16,18 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() {
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {}
 
+const vector<correlatedFeatures> SimpleAnomalyDetector:: getNormalModel() const {
+    return cf;
+}
+
+const float SimpleAnomalyDetector:: getCorrelationThreshold() const {
+    return threshold;
+}
+
+void SimpleAnomalyDetector:: setCorrelationThreshold(float newThreshold) {
+    threshold=newThreshold;
+}
+
 float SimpleAnomalyDetector:: findMaxThreshold(const vector<float>& xVec, const vector<float>& yVec, size_t size, const Line& line) {
     float max = 0;
     for (size_t i = 0; i < size; i++) {
