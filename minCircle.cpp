@@ -1,120 +1,177 @@
+// 31832248	32120296
+
 #include <iostream>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
 #include <math.h>
 #include "minCircle.h"
 
-using namespace std;
-
-float dist(Point a, Point b){
-	float x2=(a.x-b.x)*(a.x-b.x);
-	float y2=(a.y-b.y)*(a.y-b.y);
-	return sqrt(x2+y2);
-}
-
-Circle from2points(Point a,Point b){
-	float x=(a.x+b.x)/2;
-	float y=(a.y+b.y)/2;
-	float r=dist(a,b)/2;
-	return Circle(Point(x,y),r);
-}
-
-
-
-Circle from3Points(Point a, Point b, Point c){
-	// find the circumcenter of the triangle a,b,c
-	// find the circumcenter of the triangle a,b,c
-	
-	Point mAB((a.x+b.x)/2 , (a.y+b.y)/2); // mid point of line AB
-	float slopAB = (b.y - a.y) / (b.x - a.x); // the slop of AB
-	float pSlopAB = - 1/slopAB; // the perpendicular slop of AB
-	// pSlop equation is:
-	// y - mAB.y = pSlopAB * (x - mAB.x) ==> y = pSlopAB * (x - mAB.x) + mAB.y
-	
-	Point mBC((b.x+c.x)/2 , (b.y+c.y)/2); // mid point of line BC
-	float slopBC = (c.y - b.y) / (c.x - b.x); // the slop of BC
-	float pSlopBC = - 1/slopBC; // the perpendicular slop of BC
-	// pSlop equation is:
-	// y - mBC.y = pSlopBC * (x - mBC.x) ==> y = pSlopBC * (x - mBC.x) + mBC.y
-	
-	/*
-	pSlopAB * (x - mAB.x) + mAB.y = pSlopBC * (x - mBC.x) + mBC.y
-	pSlopAB*x - pSlopAB*mAB.x + mAB.y = pSlopBC*x - pSlopBC*mBC.x + mBC.y
-	
-	x*(pSlopAB - pSlopBC) = - pSlopBC*mBC.x + mBC.y + pSlopAB*mAB.x - mAB.y
-	x = (- pSlopBC*mBC.x + mBC.y + pSlopAB*mAB.x - mAB.y) / (pSlopAB - pSlopBC);
-	
-	*/
-	
-	float x = (- pSlopBC*mBC.x + mBC.y + pSlopAB*mAB.x - mAB.y) / (pSlopAB - pSlopBC);
-	float y = pSlopAB * (x - mAB.x) + mAB.y;
-	Point center(x,y);
-	float R=dist(center,a);
-	
-	return Circle(center,R);
-}
-
-Circle trivial(vector<Point>& P){
-	if(P.size()==0)
-		return Circle(Point(0,0),0);
-	else if(P.size()==1)
-		return Circle(P[0],0);
-	else if (P.size()==2)
-		return from2points(P[0],P[1]);
-
-	// maybe 2 of the points define a small circle that contains the 3ed point
-	Circle c=from2points(P[0],P[1]);
-	if(dist(P[2],c.center)<=c.radius)
-		return c;
-	c=from2points(P[0],P[2]);
-	if(dist(P[1],c.center)<=c.radius)
-		return c;
-	c=from2points(P[1],P[2]);
-	if(dist(P[0],c.center)<=c.radius)
-		return c;
-	// else find the unique circle from 3 points
-	return from3Points(P[0],P[1],P[2]);
-}
-
-
-/*
-algorithm welzl
-    input: Finite sets P and R of points in the plane |R|<= 3.
-    output: Minimal disk enclosing P with R on the boundary.
-
-    if P is empty or |R| = 3 then
-        return trivial(R)
-    choose p in P (randomly and uniformly)
-    D := welzl(P - { p }, R)
-    if p is in D then
-        return D
-
-    return welzl(P - { p }, R U { p })
+/**
+ * @brief return the circle that two points are generate.
+ * we know that two points can generate only one unique circle.
+ *
+ * @param p1 - point
+ * @param p2 - point
+ * @return the circle that the two points are generate.
  */
-
-
-Circle welzl(Point** P,vector<Point> R, size_t n){
-	if(n==0 || R.size()==3){
-		return trivial(R);
-	}
-
-	// remove random point p
-	// swap is more efficient than remove
-	//srand (time(NULL));
-	int i=rand()%n;
-	Point p(P[i]->x,P[i]->y);
-	swap(P[i],P[n-1]);
-
-	Circle c=welzl(P,R,n-1);
-
-	if(dist(p,c.center)<=c.radius)
-		return c;
-
-	R.push_back(p);
-
-	return welzl(P,R,n-1);
+Circle getCircleFrom2(const Point &p1, const Point &p2) {
+  Point center = {(p1.x + p2.x) / 2, (p1.y + p2.y) / 2};
+  return Circle(center, p1.distance(p2) / 2);
 }
 
-Circle findMinCircle(Point** points,size_t size){
-	return welzl(points,{},size);
+/**
+ * @brief return the circle that three points are generate.
+ * we know that three points can generate only one unique circle.
+ *
+ * @param p1 point
+ * @param p2 - point
+ * @param p3 - point
+ * @return the circle that the three points are generate.
+ *
+ */
+Circle getCircleFrom3(const Point &p1, const Point &p2, const Point &p3) {
+  // cases of slopes of 0 and indefinite - the center of the circle must lie in
+  // the middle of the diameter
+  if (p2.x - p1.x == 0) {
+    if (p3.y - p1.y == 0)
+      return Circle(Point((p2.x + p3.x) / 2, (p2.y + p3.y) / 2),
+                    p2.distance(p3) / 2);
+    if (p3.y - p2.y == 0)
+      return Circle(Point((p1.x + p3.x) / 2, (p1.y + p3.y) / 2),
+                    p1.distance(p3) / 2);
+  }
+  if (p3.x - p1.x == 0) {
+    if (p2.y - p1.y == 0)
+      return Circle(Point((p2.x + p3.x) / 2, (p2.y + p3.y) / 2),
+                    p2.distance(p3) / 2);
+    if (p3.y - p2.y == 0)
+      return Circle(Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2),
+                    p1.distance(p2) / 2);
+  }
+  if (p3.x - p2.x == 0) {
+    if (p2.y - p1.y == 0)
+      return Circle(Point((p1.x + p3.x) / 2, (p1.y + p3.y) / 2),
+                    p1.distance(p3) / 2);
+    if (p3.y - p1.y == 0)
+      return Circle(Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2),
+                    p1.distance(p2) / 2);
+  }
+  // building two lines and building two vertical lines to the middle of the
+  // lines. the center of the circle must lie in the intersection point between
+  // the vertical lines according to a theorem - in a circle that blocks
+  // triangle, the center of the circle is the meeting point of the vertical
+  // lines to each edge.
+
+  float m = (p2.y - p1.y) / (p2.x - p1.x);
+  // y-y1=m(x-x1) --> y=mx-mx1+y1
+  float mx1 = p1.x * m;
+  float b = mx1 * -1 + p1.y;
+  Line l1(m, b);
+  float mVertical1 = -1 / m;
+  Point middle1 = {(p1.x + p2.x) / 2, (p1.y + p2.y) / 2};
+  // y-middle1.y=m(x-middle1.x)--> y=mx-m*middle1.x+middle1.y
+  float b1 = mVertical1 * -1 * middle1.x + middle1.y;
+  // vertical line to the middle of the line of p1 and p2
+  Line vertical1(mVertical1, b1);
+  float m2 = (p3.y - p1.y) / (p3.x - p1.x);
+  // y-y1=m(x-x1) -->y=mx-mx1+y1
+  mx1 = p1.x * m2;
+  b = mx1 * -1 + p1.y;
+  Line l2(m2, b);
+  float mVertical2 = -1 / m2;
+  Point middle2 = {(p1.x + p3.x) / 2, (p1.y + p3.y) / 2};
+  // y-middle2.y=m(x-middle2.x)--> y=mx-m*middle2.x+middle2.y
+  float b2 = mVertical2 * -1 * middle2.x + middle2.y;
+  // vertical line to the middle of the line of p1 and p3
+  Line vertical2(mVertical2, b2);
+  // finding the center of the circle
+  Point center = vertical1.intersection(vertical2);
+  // finding the radius
+  float R = p1.distance(center);
+  return Circle(center, R);
+}
+
+/**
+ * @brief the function gets a circle and a point, and checks if the point is in
+ * the circle.
+ *
+ * @param c - circle
+ * @param p - point
+ * @return the function returns true if the point is in the circle. otherwise,
+ * it returns false.
+ */
+bool pIsInside(const Circle &c, const Point &p) {
+  return (c.center.distance(p) <= c.radius);
+}
+
+/**
+ * @brief the function gets vector of points that have to be on the edge of the
+ * circle, and returns the minimum circle that includes them.
+ *
+ * @param vec - vector of points
+ * @return the minimum circle that these points are on the edge of it.
+ */
+Circle minCircle(vector<Point> vec) {
+  if (vec.size() <= 3) {
+    if (vec.empty())
+      return Circle(Point(0, 0), 0);
+    if (vec.size() == 1)
+      return Circle(vec[0], 0);
+    if (vec.size() == 2)
+      return getCircleFrom2(vec[0], vec[1]);
+  }
+  // check if we can create a circle by 2 points only
+  for (int i = 0; i < 3; i++) {
+    for (int j = i + 1; j < 3; j++) {
+      Circle circ = getCircleFrom2(vec[i], vec[j]);
+      bool flag = true;
+      for (int k = 0; k < vec.size(); k++) {
+        if (!pIsInside(circ, vec[k])) {
+          flag = false;
+          break;
+        }
+      }
+      if (flag)
+        return circ;
+    }
+  }
+  return getCircleFrom3(vec[0], vec[1], vec[2]);
+}
+
+/**
+ * @brief the recursive function.
+ * the function gets array of points, the size of the array,
+ * and a vector of points that have to be on the edge of the circle.
+ * the function returns the minimun circle that encloses all the points.
+ *
+ * @param points - the points that have to be in the circle.
+ * @param size - the size of the array of points.
+ * @param vec - the points that have to be on the edge of the circle.
+ * @return the minimun circle that encloses all the points.
+ */
+Circle helper(Point **points, size_t size, vector<Point> vec) {
+	// edge cases
+  if (size == 0 || vec.size() == 3) {
+    return minCircle(vec);
+  }
+
+  Point p = {points[size - 1]->x, points[size - 1]->y};
+  Circle c = helper(points, size - 1, vec);
+  if (pIsInside(c, p))
+    return c;
+
+  // else, the point must be on the edge of the circle
+  vec.push_back(p);
+
+  return helper(points, size - 1, vec);
+}
+
+/**
+ * @brief the main function that calls the recursive function.
+ *
+ * @param points - an array points that we want to find a minimum enclosing circle
+ * for them.
+ * @param size - the size of the array points.
+ * @return
+ */
+Circle findMinCircle(Point **points, size_t size) {
+  return helper(points, size, {});
 }

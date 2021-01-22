@@ -1,3 +1,5 @@
+// Maor Malekan 321202962
+
 #include "CLI.h"
 
 using namespace std;
@@ -18,13 +20,16 @@ CLI::~CLI() {
 }
 
 void CLI::start(){
-    float choose = 0;
+    int choose = 0;
+    string stringChoose;
     do {
         dio->write("Welcome to the Anomaly Detection Server.\nPlease choose an option:\n");
         for (size_t i = 0; i < numCommands; i++) {
-            dio->write(to_string(i+1) + "." + commands[i]->getDescription());
+            string commandDesc = to_string(i+1) + "." + commands[i]->getDescription();
+            dio->write(commandDesc);
         }
-        dio->read(&choose);
+        stringChoose = dio->read();
+        choose = stoi(stringChoose);
         if (choose >= 1 && choose <= numCommands - 1) {
             commands[choose-1]->execute();
         }

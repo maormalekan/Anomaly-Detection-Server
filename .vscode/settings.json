@@ -9,6 +9,16 @@
         "limits": "cpp",
         "sstream": "cpp",
         "streambuf": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "cmath": "cpp",
+        "exception": "cpp",
+        "buffer": "cpp",
+        "io_context": "cpp",
+        "memory_resource": "cpp",
+        "new": "cpp",
+        "executor": "cpp",
+        "thread": "cpp",
+        "iostream": "cpp",
+        "string": "cpp"
     }
 }

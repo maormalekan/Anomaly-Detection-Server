@@ -1,3 +1,5 @@
+// Maor Malekan 321202962
+
 #include "timeseries.h"
 
 // The function returns a vector with it's features
@@ -35,4 +37,9 @@ void TimeSeries:: addData(string values) {
         featuresMap[features[i]].push_back(stof(value));
         i++;
     }
+    dataSize++;
+}
+
+const size_t TimeSeries:: getDataSize() const {
+    return dataSize;
 }

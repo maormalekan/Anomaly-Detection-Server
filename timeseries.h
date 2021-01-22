@@ -21,6 +21,7 @@ class TimeSeries{
 
     vector<string> features;
     map<string, vector<float>> featuresMap;
+    size_t dataSize;
     
     public:
         TimeSeries() {}
@@ -53,10 +54,11 @@ class TimeSeries{
         // The function gets feature's name and returns it's values
         const vector<float> getValFeature(string feature) const;
 
-
         // The function gets feature's name and returns it's values
         const map<string, vector<float>> getMap() const;
 
+        // The function gets returns the size of data.
+        const size_t getDataSize() const;
 };
 
 #endif /* TIMESERIES_H_ */

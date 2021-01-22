@@ -1,3 +1,5 @@
+// Maor Malekan 321202962
+
 #ifndef SIMPLEANOMALYDETECTOR_H_
 #define SIMPLEANOMALYDETECTOR_H_
 
@@ -14,6 +16,12 @@ struct correlatedFeatures{
 	Line lin_reg;
 	float threshold;
 	Point center;
+};
+
+struct reportWindow{
+    string description;
+    long firstTimeStep;
+    long lastTimeStep;
 };
 
 
